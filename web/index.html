@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>Melrov Idle Leaderboards</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="config.js?id=1"></script>
+    <script src="fetchData.js?id=6"></script>
+    <script>
+        $(document).ready(function() {
+            mainFunction();
+        });
+    </script> 
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <style>
+        td {
+            text-align: center;
+        }
+
+        tbody > tr > td.main-column {
+            font-weight: bold;
+        }
+    </style>
+<body>
+    <table id="MainTable" class="cell-border">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Total Level</th>
+                <th>Woodcutting</th>
+                <th>Fishing</th>
+                <th>Firemaking</th>
+                <th>Cooking</th>
+                <th>Mining</th>
+                <th>Smithing</th>
+                <th>Attack</th>
+                <th>Strength</th>
+                <th>Defence</th>
+                <th>Hitpoints</th>
+                <th>Thieving</th>
+                <th>Farming</th>
+                <th>Ranged</th>
+                <th>Fletching</th>
+                <th>Crafting</th>
+                <th>Runecrafting</th>
+                <th>Magic</th>
+                <th>Prayer</th>
+                <th>Slayer</th>
+                <th>Herblore</th>
+                <th>Easter Hard<strong>*</strong></th>
+            </tr>
+        </thead>
+        <tbody id="MainTableBody">
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Username</th>
+                <th>Total Level</th>
+                <th>Woodcutting</th>
+                <th>Fishing</th>
+                <th>Firemaking</th>
+                <th>Cooking</th>
+                <th>Mining</th>
+                <th>Smithing</th>
+                <th>Attack</th>
+                <th>Strength</th>
+                <th>Defence</th>
+                <th>Hitpoints</th>
+                <th>Thieving</th>
+                <th>Farming</th>
+                <th>Ranged</th>
+                <th>Fletching</th>
+                <th>Crafting</th>
+                <th>Runecrafting</th>
+                <th>Magic</th>
+                <th>Prayer</th>
+                <th>Slayer</th>
+                <th>Herblore</th>
+                <th>Easter Hard<strong>*</strong></th>
+            </tr>
+        </tfoot>
+    </table>
+    <br />
+    <p><em>* Indicates this can no longer be obtained</em></p>
+</body>
+</html>
