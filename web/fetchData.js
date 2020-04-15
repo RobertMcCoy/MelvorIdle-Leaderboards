@@ -34,7 +34,6 @@ var mainFunction = function () {
                 newRow.insertCell(iterator++).innerHTML = element.Prayer;
                 newRow.insertCell(iterator++).innerHTML = element.Slayer;
                 newRow.insertCell(iterator++).innerHTML = element.Herblore;
-                newRow.insertCell(iterator++).innerHTML = (sanitizer(element.EasterHard) || 0);
             });
 
             $('#MainTable').DataTable({
