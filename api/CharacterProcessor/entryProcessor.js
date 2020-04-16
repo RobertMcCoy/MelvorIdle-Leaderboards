@@ -2,7 +2,7 @@ const azure = require('azure-storage');
 const azureConnectionString = require('../config').tableServiceConnectionString;
 const tableService = azure.createTableService(azureConnectionString);
 
-function Process(skills, username, mastery) {
+function Process(context, skills, username, mastery) {
     try {
         tableService.createTableIfNotExists(tableName, (error, result, response) => {
             if (!error) {
@@ -34,20 +34,20 @@ function Process(skills, username, mastery) {
 
                 tableService.insertOrReplaceEntity(tableName, task, (error, result, response) => {
                     if (!error) {
-                        console.log(`[SUCCESS] Create character table entry for: ${username}`);
+                        context.log.info(`[SUCCESS] Create character table entry for: ${username}`);
                     }
                     else {
-                        console.log(`[ERROR] Failed to create character table entry for: ${username}: ${JSON.stringify(result)}`);
+                        context.log.error(`[ERROR] Failed to create character table entry for: ${username}: ${JSON.stringify(result)}`);
                     }
                 });
             }
             else {
-                console.log(`[ERROR] Failed to verify/create Characters table existance.\r\n\t${error}`);
+                context.log.error(`[ERROR] Failed to verify/create Characters table existance.\r\n\t${error}`);
             }
         });
     }
     catch (exception) {
-        console.log(`[ERROR] Exception in processing character.\r\n${exception}`);
+        context.log.error(`[ERROR] Exception in processing character.\r\n${exception}`);
     }
 }
 
