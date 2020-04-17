@@ -1,43 +1,46 @@
 const azure = require('azure-storage');
-const azureConnectionString = require('../config').tableServiceConnectionString;
-const tableService = azure.createTableService(azureConnectionString);
+const config = require('../config');
+const tableService = azure.createTableService(config.tableServiceConnectionString);
 
-function Process(context, skills, username, mastery) {
+function Process(context, request) {
     try {
-        tableService.createTableIfNotExists(tableName, (error, result, response) => {
+        tableService.createTableIfNotExists(config.tableName, (error, result, response) => {
             if (!error) {
+                context.log.info("Request received for: " + JSON.stringify(request));
                 var task = {
                     PartitionKey: { '_': 'character' },
-                    RowKey: { '_': username },
-                    Woodcutting: { '_': skills[0] },
-                    Fishing: { '_': skills[1] },
-                    Firemaking: { '_': skills[2] },
-                    Cooking: { '_': skills[3] },
-                    Mining: { '_': skills[4] },
-                    Smithing: { '_': skills[5] },
-                    Attack: { '_': skills[6] },
-                    Strength: { '_': skills[7] },
-                    Defence: { '_': skills[8] },
-                    Hitpoints: { '_': skills[9] },
-                    Thieving: { '_': skills[10] },
-                    Farming: { '_': skills[11] },
-                    Ranged: { '_': skills[12] },
-                    Fletching: { '_': skills[13] },
-                    Crafting: { '_': skills[14] },
-                    Runecrafting: { '_': skills[15] },
-                    Magic: { '_': skills[16] },
-                    Prayer: { '_': skills[17] },
-                    Slayer: { '_': skills[18] },
-                    Herblore: { '_': skills[19] },
-                    Milestones: { '_': JSON.stringify(mastery || null) }
+                    RowKey: { '_': request.user },
+                    Woodcutting: { '_': request.skills[0] },
+                    Fishing: { '_': request.skills[1] },
+                    Firemaking: { '_': request.skills[2] },
+                    Cooking: { '_': request.skills[3] },
+                    Mining: { '_': request.skills[4] },
+                    Smithing: { '_': request.skills[5] },
+                    Attack: { '_': request.skills[6] },
+                    Strength: { '_': request.skills[7] },
+                    Defence: { '_': request.skills[8] },
+                    Hitpoints: { '_': request.skills[9] },
+                    Thieving: { '_': request.skills[10] },
+                    Farming: { '_': request.skills[11] },
+                    Ranged: { '_': request.skills[12] },
+                    Fletching: { '_': request.skills[13] },
+                    Crafting: { '_': request.skills[14] },
+                    Runecrafting: { '_': request.skills[15] },
+                    Magic: { '_': request.skills[16] },
+                    Prayer: { '_': request.skills[17] },
+                    Slayer: { '_': request.skills[18] },
+                    Herblore: { '_': request.skills[19] },
+                    Milestones: { '_': JSON.stringify(request.mastery || null) },
+                    GoldCoins: { '_': request.gold },
+                    BankValue: { '_': request.bankValue }
                 };
 
-                tableService.insertOrReplaceEntity(tableName, task, (error, result, response) => {
+                tableService.insertOrReplaceEntity(config.tableName, task, (error, result, response) => {
                     if (!error) {
-                        context.log.info(`[SUCCESS] Create character table entry for: ${username}`);
+                        context.log.info(`[SUCCESS] Create character table entry for: ${request.username} - ${JSON.stringify(request.skills)}`);
                     }
                     else {
-                        context.log.error(`[ERROR] Failed to create character table entry for: ${username}: ${JSON.stringify(result)}`);
+                        context.log.error(`[ERROR] Failed to create character table entry for: ${request.username}: ${JSON.stringify(result)}`);
                     }
                 });
             }
