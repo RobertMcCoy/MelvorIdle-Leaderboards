@@ -1,6 +1,6 @@
 var mainFunction = function () {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `https://${accountName}.table.core.windows.net/${tableName}?$select=RowKey,Woodcutting,Fishing,Firemaking,Cooking,Mining,Smithing,Attack,Strength,Defence,Hitpoints,Thieving,Farming,Ranged,Fletching,Crafting,Runecrafting,Magic,Prayer,Slayer,Herblore,EasterHard&${tableAccessKey}`, true);
+    xhttp.open("GET", `https://${accountName}.table.core.windows.net/${tableName}?$select=RowKey,GoldCoins,BankValue,Woodcutting,Fishing,Firemaking,Cooking,Mining,Smithing,Attack,Strength,Defence,Hitpoints,Thieving,Farming,Ranged,Fletching,Crafting,Runecrafting,Magic,Prayer,Slayer,Herblore&${tableAccessKey}`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Accept', 'application/json;odata=nometadata');
 
@@ -14,6 +14,7 @@ var mainFunction = function () {
                 var iterator = 0;
                 newRow.insertCell(iterator++).innerHTML = element.RowKey;
                 newRow.insertCell(iterator++).innerHTML = getTotalLevel(element);
+                newRow.insertCell(iterator++).innerHTML = decorateWithCommas(getTotalGold(element));
                 newRow.insertCell(iterator++).innerHTML = element.Woodcutting;
                 newRow.insertCell(iterator++).innerHTML = element.Fishing;
                 newRow.insertCell(iterator++).innerHTML = element.Firemaking;
@@ -34,6 +35,8 @@ var mainFunction = function () {
                 newRow.insertCell(iterator++).innerHTML = element.Prayer;
                 newRow.insertCell(iterator++).innerHTML = element.Slayer;
                 newRow.insertCell(iterator++).innerHTML = element.Herblore;
+                newRow.insertCell(iterator++).innerHTML = decorateWithCommas(element.GoldCoins || 0);
+                newRow.insertCell(iterator++).innerHTML = decorateWithCommas(element.BankValue || 0);
             });
 
             $('#MainTable').DataTable({
@@ -46,10 +49,12 @@ var mainFunction = function () {
 
     xhttp.send();
 
-    var sanitizer = function(string) {
-        if (string == "N/A")
-            return 0;
-        return string;
+    var decorateWithCommas = function (value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    var getTotalGold = function (record) {
+        return parseInt(record.GoldCoins || 0) + parseInt(record.BankValue || 0);
     }
 
     var getTotalLevel = function (record) {
